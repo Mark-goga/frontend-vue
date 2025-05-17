@@ -1,18 +1,11 @@
+<script setup lang="ts">
+import { ROUTES } from '@/common/constants/routes';
+</script>
+
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <router-link :to="ROUTES.AUTH.REGISTER">register</router-link>
+    <router-link :to="ROUTES.AUTH.LOGIN">login</router-link>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue';
-
-export default defineComponent({
-  name: 'HomeView',
-  components: {
-    HelloWorld,
-  },
-});
-</script>

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { authRoutes } from '@/views/auth';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -6,6 +7,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'home',
     component: () => import(/* webpackChunkName: "home" */ '../views/HomeView.vue'),
   },
+  ...authRoutes,
 ];
 
 const router = createRouter({
