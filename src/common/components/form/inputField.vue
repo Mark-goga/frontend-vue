@@ -12,12 +12,14 @@ withDefaults(
     label: string;
     type: string;
     rules: string;
+    placeholder?: string;
   }>(),
   {
     name: '',
     label: '',
     type: 'text',
     rules: '',
+    placeholder: '',
   }
 );
 </script>
