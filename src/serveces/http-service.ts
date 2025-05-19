@@ -71,13 +71,11 @@ export class HttpService {
           message: response.statusText,
         };
 
-        try {
-          const errorData = await response.json();
-          errorResponse.data = errorData;
-          if (errorData.message) {
-            errorResponse.message = errorData.message;
-          }
-        } catch {}
+        const errorData = await response.json();
+        errorResponse.data = errorData;
+        if (errorData.message) {
+          errorResponse.message = errorData.message;
+        }
 
         throw errorResponse;
       }

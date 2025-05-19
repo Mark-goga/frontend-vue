@@ -1,15 +1,15 @@
 import { z } from 'zod';
 import { HttpService } from '@/serveces/http-service';
 import { HttpError } from '@/serveces/types';
-import { authApi } from '@/serveces/auth-api';
+import { authApi } from '@/views/auth/api/auth';
 
-export const apiService = new HttpService('http://localhost:3000', {
+export const apiService = new HttpService('http://localhost:3000/api', {
   onError: async (error, requestFn, schema) => {
     const httpError = error as HttpError;
 
     if (httpError.status === 401 && httpError.message === 'Token expired or invalid') {
       try {
-        await authApi.refreshTokens();
+        await authApi.refresh();
 
         const newResponse = await requestFn();
 
