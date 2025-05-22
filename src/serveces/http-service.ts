@@ -63,6 +63,14 @@ export class HttpService {
   ): Promise<HttpServiceResult<T>> {
     const requestFn = async () => {
       this.middlewareBeforeRequest?.();
+
+      if (options.headers && typeof options.headers === 'object') {
+        options.headers = this.getHeaders(
+          options.headers instanceof Headers
+            ? undefined
+            : (options.headers as Record<string, string>)
+        );
+      }
       const response = await fetch(this.buildUrl(url, queryParams), options);
 
       if (!response.ok) {
@@ -88,10 +96,6 @@ export class HttpService {
 
       if (this.middlewareOnResponse) {
         return this.middlewareOnResponse(data, schema);
-      }
-
-      if (schema) {
-        return schema.parse(data);
       }
 
       return data;
@@ -120,6 +124,7 @@ export class HttpService {
       {
         method: 'GET',
         headers: this.getHeaders(options?.headers),
+        credentials: 'include',
         ...options?.init,
       },
       options?.queryParams,
@@ -143,6 +148,7 @@ export class HttpService {
         method: 'POST',
         headers: this.getHeaders(options?.headers),
         body: JSON.stringify(data),
+        credentials: 'include',
         ...options?.init,
       },
       options?.queryParams,
@@ -166,6 +172,7 @@ export class HttpService {
         method: 'PUT',
         headers: this.getHeaders(options?.headers),
         body: JSON.stringify(data),
+        credentials: 'include',
         ...options?.init,
       },
       options?.queryParams,
@@ -187,6 +194,7 @@ export class HttpService {
       {
         method: 'DELETE',
         headers: this.getHeaders(options?.headers),
+        credentials: 'include',
         ...options?.init,
       },
       options?.queryParams,
@@ -210,6 +218,7 @@ export class HttpService {
         method: 'PATCH',
         headers: this.getHeaders(options?.headers),
         body: JSON.stringify(data),
+        credentials: 'include',
         ...options?.init,
       },
       options?.queryParams,

@@ -1,22 +1,19 @@
 <script lang="ts" setup>
 import { initialValues } from '@/views/auth/login/constants';
 import AuthForm from '@/views/auth/components/AuthForm.vue';
-import { authApi } from '@/views/auth/api/auth';
-import { ref } from 'vue';
+import { useUserStore } from '@/common/store';
+import { useRouter } from 'vue-router';
+import { ROUTES } from '@/common/constants/routes';
 
-const loading = ref(false);
-const error = ref<string | null>(null);
+const router = useRouter();
+const userStore = useUserStore();
 
 const onSubmit = async (values: any) => {
-  try {
-    loading.value = true;
-    error.value = null;
-    await authApi.login(values);
-  } catch (err) {
-    error.value = 'Login failed. Please check your credentials.';
-  } finally {
-    loading.value = false;
+  await userStore.login(values.email, values.password);
+  if (userStore.error) {
+    return;
   }
+  await router.push(ROUTES.HOME);
 };
 </script>
 
@@ -25,6 +22,6 @@ const onSubmit = async (values: any) => {
     :on-submit="onSubmit"
     :initial-values="initialValues"
     submit-text="Login"
-    :loading="loading"
+    :loading="userStore.loading"
   ></AuthForm>
 </template>

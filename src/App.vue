@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import CustomLink from '@/common/components/ui/CustomLink.vue';
+import ToastContainer from '@/common/components/ui/ToastContainer.vue';
 import { ROUTES } from '@/common/constants/routes';
+import { onMounted } from 'vue';
+import { useUserStore } from '@/common/store';
+
+const userStore = useUserStore();
+
+onMounted(() => {
+  userStore.refreshToken();
+});
 </script>
 
 <template>
@@ -27,6 +36,8 @@ import { ROUTES } from '@/common/constants/routes';
         <p>&copy; 2025 My Website. All rights reserved.</p>
       </div>
     </footer>
+
+    <ToastContainer />
   </div>
 </template>
 

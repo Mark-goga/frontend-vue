@@ -26,7 +26,6 @@ export const SessionSchema = z.object({
 
 export const AuthResponseWithUserSchema = z.object({
   accessToken: z.string(),
-  refreshToken: z.string(),
   user: UserSchema,
 });
 
@@ -34,17 +33,8 @@ export const SessionsSchema = z.object({
   sessions: z.array(SessionSchema),
 });
 
-export const ValidateTokenResponseSchema = z.object({
-  user: UserSchema,
-  session: SessionSchema,
-});
-
 export const AuthResponseSchema = createApiResponseSchema(AuthResponseWithUserSchema);
 export const SessionsResponseSchema = createApiResponseSchema(SessionsSchema);
-export const ValidateTokenResponseWrapperSchema = createApiResponseSchema(
-  ValidateTokenResponseSchema
-);
-export const EmptyResponseSchema = createApiResponseSchema(z.object({}));
 
 export type Session = z.infer<typeof SessionSchema>;
 export type Sessions = z.infer<typeof SessionsSchema>;

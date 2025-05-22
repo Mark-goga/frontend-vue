@@ -1,12 +1,12 @@
 import { apiService } from '@/serveces/http-service-instance';
 import {
   AuthResponseSchema,
-  EmptyResponseSchema,
   LoginDto,
   RegisterDto,
   RemoveSessionsDto,
   SessionsResponseSchema,
 } from '@/views/auth/api/validations';
+import { EmptyResponseSchema } from '@/common/types-validation';
 
 export const authApi = {
   baseUrl: '/auth',
