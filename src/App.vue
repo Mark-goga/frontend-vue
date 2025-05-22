@@ -2,10 +2,25 @@
 import CustomLink from '@/common/components/ui/CustomLink.vue';
 import ToastContainer from '@/common/components/ui/ToastContainer.vue';
 import { ROUTES } from '@/common/constants/routes';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useUserStore } from '@/common/store';
 
 const userStore = useUserStore();
+
+const authenticatedLinks = [
+  { text: 'Home', route: ROUTES.HOME },
+  { text: 'Logout', action: () => userStore.logout() },
+];
+
+const unauthenticatedLinks = [
+  { text: 'Home', route: ROUTES.HOME },
+  { text: 'Register', route: ROUTES.AUTH.REGISTER },
+  { text: 'Login', route: ROUTES.AUTH.LOGIN },
+];
+
+const navLinks = computed(() => {
+  return userStore.isAuthenticated ? authenticatedLinks : unauthenticatedLinks;
+});
 
 onMounted(() => {
   userStore.refreshToken();
@@ -20,9 +35,16 @@ onMounted(() => {
       <div class="container mx-auto flex justify-between items-center px-4">
         <h1 class="text-lg font-bold">My Website</h1>
         <nav class="flex space-x-4">
-          <CustomLink :to="ROUTES.HOME"> Home </CustomLink>
-          <CustomLink :to="ROUTES.AUTH.REGISTER"> Register </CustomLink>
-          <CustomLink :to="ROUTES.AUTH.LOGIN"> Login </CustomLink>
+          <template v-for="(link, index) in navLinks" :key="index">
+            <CustomLink v-if="link.route" :to="link.route">{{ link.text }}</CustomLink>
+            <a
+              v-else
+              href="#"
+              @click.prevent="link.action"
+              class="text-white hover:text-white/80"
+              >{{ link.text }}</a
+            >
+          </template>
         </nav>
       </div>
     </header>

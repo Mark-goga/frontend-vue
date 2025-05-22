@@ -2,10 +2,12 @@
 import InputField from '@/common/components/form/inputField.vue';
 import { initialValues } from '@/views/auth/register/constants';
 import AuthForm from '@/views/auth/components/AuthForm.vue';
+import { useUserStore } from '@/common/store';
 
 const nameRule = 'required';
-const onSubmit = (values: any) => {
-  console.log('Form submitted:', values);
+const userStore = useUserStore();
+const onSubmit = (values: typeof initialValues) => {
+  userStore.register(values.name, values.email, values.password);
 };
 </script>
 

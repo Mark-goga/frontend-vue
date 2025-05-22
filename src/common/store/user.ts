@@ -55,8 +55,8 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function refreshToken() {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
       await handleApiRequest(
         () => authApi.refresh(),
         (data) => {
@@ -71,7 +71,12 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  const isAuthenticated = computed(() => !!accessToken.value && !!user.value);
+  const isAuthenticated = computed(() => {
+    const hasToken = !!accessToken.value;
+    const hasUser = !!user.value;
+    console.log('Auth state:', { hasToken, hasUser, token: accessToken.value });
+    return hasToken && hasUser;
+  });
 
   return {
     user,
