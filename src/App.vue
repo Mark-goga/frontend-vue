@@ -10,6 +10,7 @@ const userStore = useUserStore();
 const authenticatedLinks = [
   { text: 'Home', route: ROUTES.HOME },
   { text: 'Logout', action: () => userStore.logout() },
+  { text: 'Sessions', route: ROUTES.AUTH.SESSIONS },
 ];
 
 const unauthenticatedLinks = [

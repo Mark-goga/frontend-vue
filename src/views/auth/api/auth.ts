@@ -34,7 +34,7 @@ export const authApi = {
   },
 
   removeSessions: async (data: RemoveSessionsDto) => {
-    return await apiService.post(`${authApi.baseUrl}/sessions`, data, {
+    return await apiService.delete(`${authApi.baseUrl}/sessions`, data, {
       schema: EmptyResponseSchema,
     });
   },

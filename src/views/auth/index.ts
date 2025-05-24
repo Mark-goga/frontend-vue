@@ -13,4 +13,10 @@ export const authRoutes = [
     component: () => import(/* webpackChunkName: "login" */ './login/LoginView.vue'),
     meta: { requiresGuest: true },
   },
+  {
+    path: ROUTES.AUTH.SESSIONS,
+    name: 'sessions',
+    component: () => import(/* webpackChunkName: "sessions" */ './session/SessionView.vue'),
+    meta: { requiresAuth: true },
+  },
 ];

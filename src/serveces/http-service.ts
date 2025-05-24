@@ -182,6 +182,7 @@ export class HttpService {
 
   async delete<T>(
     url: string,
+    data: any,
     options?: {
       queryParams?: Record<string, string>;
       headers?: Record<string, string>;
@@ -193,6 +194,7 @@ export class HttpService {
       url,
       {
         method: 'DELETE',
+        body: JSON.stringify(data),
         headers: this.getHeaders(options?.headers),
         credentials: 'include',
         ...options?.init,

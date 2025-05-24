@@ -3,6 +3,7 @@ export const ROUTES = {
   AUTH: {
     LOGIN: '/login',
     REGISTER: '/register',
+    SESSIONS: '/sessions',
   },
 } as const;
 
