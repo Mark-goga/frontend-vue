@@ -34,7 +34,7 @@ onMounted(() => {
       class="bg-primary-600 text-white py-4 shadow-sm shadow-primary-300 w-[94%] rounded-lg self-center mt-4"
     >
       <div class="container mx-auto flex justify-between items-center px-4">
-        <h1 class="text-lg font-bold">My Website</h1>
+        <h1 class="text-lg font-bold">Filmmy</h1>
         <nav class="flex space-x-4">
           <template v-for="(link, index) in navLinks" :key="index">
             <CustomLink v-if="link.route" :to="link.route">{{ link.text }}</CustomLink>
@@ -56,7 +56,7 @@ onMounted(() => {
 
     <footer class="bg-background-dark text-text-muted py-4">
       <div class="container mx-auto text-center">
-        <p>&copy; 2025 My Website. All rights reserved.</p>
+        <p>&copy; 2025 Filmmy. All rights reserved.</p>
       </div>
     </footer>
 

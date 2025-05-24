@@ -2,16 +2,9 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { authRoutes } from '@/views/auth';
 import { useUserStore } from '@/common/store';
 import { storeToRefs } from 'pinia';
+import { homeRoutes } from '@/views/home';
 
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'home',
-    component: () => import(/* webpackChunkName: "home" */ '../views/HomeView.vue'),
-    meta: { requiresAuth: false },
-  },
-  ...authRoutes,
-];
+const routes: Array<RouteRecordRaw> = [...homeRoutes, ...authRoutes];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

@@ -49,9 +49,13 @@ export class HttpService {
     if (!queryParams) return fullUrl;
 
     const queryString = Object.entries(queryParams)
-      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+      .map(([key, value]) => {
+        if (typeof value === 'object') {
+          value = JSON.stringify(value);
+        }
+        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+      })
       .join('&');
-
     return `${fullUrl}${fullUrl.includes('?') ? '&' : '?'}${queryString}`;
   }
 
@@ -113,7 +117,7 @@ export class HttpService {
   async get<T>(
     url: string,
     options?: {
-      queryParams?: Record<string, string>;
+      queryParams?: Record<string, any>;
       headers?: Record<string, string>;
       init?: Omit<RequestInit, 'method' | 'headers' | 'body'>;
       schema?: z.ZodType<T>;
