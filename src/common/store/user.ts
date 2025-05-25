@@ -4,8 +4,12 @@ import { User } from '@/common/types-validation/user';
 import { authApi } from '@/views/auth/api/auth';
 import { useApiRequest } from '@/common/hooks';
 import { apiService } from '@/serveces/http-service-instance';
+import { useRouter } from 'vue-router';
+import { ROUTES } from '@/common/constants/routes';
 
 export const useUserStore = defineStore('user', () => {
+  const router = useRouter();
+
   const user = ref<User | null>(null);
   const accessToken = ref<string | null>(null);
   const loading = ref<boolean>(false);
@@ -65,7 +69,9 @@ export const useUserStore = defineStore('user', () => {
         {
           onError: () => {
             clearUserData();
+            router.push({ name: ROUTES.HOME });
           },
+          showToastSuccess: false,
         }
       );
     }
@@ -74,7 +80,6 @@ export const useUserStore = defineStore('user', () => {
   const isAuthenticated = computed(() => {
     const hasToken = !!accessToken.value;
     const hasUser = !!user.value;
-    console.log('Auth state:', { hasToken, hasUser, token: accessToken.value });
     return hasToken && hasUser;
   });
 

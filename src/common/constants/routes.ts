@@ -5,6 +5,9 @@ export const ROUTES = {
     REGISTER: '/register',
     SESSIONS: '/sessions',
   },
+  FILMS: {
+    DETAILS: '/films/:id',
+  },
 } as const;
 
 Object.freeze(ROUTES);

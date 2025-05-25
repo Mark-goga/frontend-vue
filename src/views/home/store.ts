@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { Film, filmsApi } from '@/common/api/films';
+import { filmsApi } from '@/common/api/films';
 import { useApiRequest } from '@/common/hooks';
+import { Film } from '@/common/types-validation';
 
 export const useHomeStore = defineStore('home', () => {
   const loading = ref<boolean>(false);

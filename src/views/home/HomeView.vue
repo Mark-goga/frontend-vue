@@ -11,10 +11,17 @@ import { useHomeStore } from '@/views/home/store';
 import { storeToRefs } from 'pinia';
 import { getStarsFromEstimation } from '@/common/utils/stars';
 import CustomLoader from '@/common/components/ui/CustomLoader.vue';
+import { useRouter } from 'vue-router';
+import FilmNotFound from '@/views/films/components/FilmNotFound.vue';
 
+const router = useRouter();
 const store = useHomeStore();
 const { films, loading, error } = storeToRefs(store);
 const { fetchFilms } = store;
+
+const handleFilmClick = (filmId: string) => {
+  router.push(`/films/${filmId}`);
+};
 
 onMounted(async () => {
   await fetchFilms();
@@ -25,9 +32,7 @@ onMounted(async () => {
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-8 text-text-bright">Огляд фільмів</h1>
     <CustomLoader v-if="loading" />
-    <div v-else-if="films.length === 0" class="text-center py-10">
-      <p class="text-text-muted text-xl">Фільми не знайдено</p>
-    </div>
+    <FilmNotFound v-if="films.length === 0" />
 
     <div v-else class="relative">
       <Swiper
@@ -60,8 +65,8 @@ onMounted(async () => {
       >
         <SwiperSlide v-for="film in films" :key="film.id" class="pb-12">
           <div
-            class="bg-background-card rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl film-card"
-            onclick="handleFilmClick(film.id)"
+            class="bg-background-card rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl film-card cursor-pointer"
+            @click="handleFilmClick(film.id)"
           >
             <div class="relative">
               <img
