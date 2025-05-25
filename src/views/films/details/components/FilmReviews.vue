@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { ReviewWithUser } from '@/common/types-validation';
-import StarList from '@/common/components/ui/StarList.vue';
-import { getStarsFromEstimation } from '@/common/utils/stars';
 import { formatDate } from '@/common/utils';
 import CardWrapper from '@/common/components/ui/CardWrapper.vue';
 import UserAvatar from '@/common/components/ui/UserAvatar.vue';
+import StarWithRating from '@/common/components/film/StarWithRating.vue';
 
 defineProps<{
   reviews: ReviewWithUser[];
@@ -38,11 +37,7 @@ defineProps<{
                     <span class="text-sm">{{ formatDate(review.createdAt) }}</span>
                   </div>
                 </div>
-
-                <div class="flex items-center">
-                  <StarList :stars="getStarsFromEstimation(review.rating)" />
-                  <span class="ml-2 text-text-bright">{{ review.rating }}/5</span>
-                </div>
+                <StarWithRating :rating="review.rating" />
               </div>
 
               <div class="mt-3 text-text-regular">

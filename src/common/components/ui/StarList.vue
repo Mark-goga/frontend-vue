@@ -2,10 +2,14 @@
 import FullStar from '@/common/components/ui/svg/fullStar.vue';
 import EmptyStar from '@/common/components/ui/svg/emptyStar.vue';
 import HalfStar from '@/common/components/ui/svg/halfStar.vue';
+import { getStarsFromEstimation } from '@/common/utils/stars';
+import { computed } from 'vue';
 
-defineProps<{
-  stars: string[];
+const props = defineProps<{
+  rating: number;
 }>();
+
+const stars = computed(() => getStarsFromEstimation(props.rating));
 </script>
 
 <template>

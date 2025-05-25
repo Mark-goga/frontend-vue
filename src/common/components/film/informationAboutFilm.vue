@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { getStarsFromEstimation } from '@/common/utils/stars';
 import ListOfText from '@/common/components/ui/ListOfText.vue';
-import StarList from '@/common/components/ui/StarList.vue';
 import { Film } from '@/common/types-validation';
 import { computed, ref } from 'vue';
+import StarWithRating from '@/common/components/film/StarWithRating.vue';
 
 const props = defineProps<{
   film: Film;
@@ -67,10 +66,7 @@ const handleAvatarLoad = () => {
           {{ film.title }}
         </h1>
 
-        <div class="flex items-center mb-4 justify-center">
-          <StarList class="mb-0!" :stars="getStarsFromEstimation(film.estimation || 0)" />
-          <span class="ml-2 text-text-muted">{{ film.estimation?.toFixed(1) || 'N/A' }}/10</span>
-        </div>
+        <StarWithRating :rating="film.estimation" />
 
         <div class="mb-6 space-y-3">
           <p v-if="film.director" class="text-text-regular">
