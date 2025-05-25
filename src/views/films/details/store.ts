@@ -16,7 +16,7 @@ export const useFilmDetailsStore = defineStore('details_film', () => {
       () => filmsApi.findOne(id),
       (data) => {
         film.value = data.film;
-        reviews.value = data.reviews || [];
+        reviews.value = data.reviews;
       },
       {
         showToastSuccess: false,

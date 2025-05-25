@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div v-if="texts.length" class="flex flex-wrap gap-2 mt-3">
+  <div v-if="texts.length" class="flex flex-wrap gap-2">
     <span
       v-for="(text, i) in texts"
       :key="i"

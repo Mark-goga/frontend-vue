@@ -84,11 +84,11 @@ onMounted(async () => {
               <CustomText variant="body" class="text-xl font-bold truncate"
                 >{{ film.title }}
               </CustomText>
-              <StarList :stars="getStarsFromEstimation(film.estimation || 0)" />
+              <StarList class="mb-3" :stars="getStarsFromEstimation(film.estimation || 0)" />
               <p v-if="film.director" class="text-text-muted text-sm mb-1">
                 <span class="font-semibold">Режисер:</span> {{ film.director }}
               </p>
-              <ListOfText :texts="film.genre || []" />
+              <ListOfText class="mt-3" :texts="film.genre || []" />
             </div>
           </div>
         </SwiperSlide>

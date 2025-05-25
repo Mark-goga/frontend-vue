@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex items-center mb-3">
+  <div class="flex items-center">
     <span v-for="(star, index) in stars" :key="index" class="mr-1">
       <FullStar v-if="star === 'full'" />
       <HalfStar v-if="star === 'half'" />
