@@ -6,6 +6,7 @@ import { Film, ReviewWithUser } from '@/common/types-validation';
 
 export const useFilmDetailsStore = defineStore('details_film', () => {
   const film = ref<Film | null>(null);
+  const similarFilmsByGenre = ref<Film[]>([]);
   const reviews = ref<ReviewWithUser[]>([]);
   const loading = ref(true);
   const error = ref<string | null>(null);
@@ -24,11 +25,29 @@ export const useFilmDetailsStore = defineStore('details_film', () => {
     );
   };
 
+  const fetchSimilarFilmsByGenre = async (genre: string[]) => {
+    await handleApiRequest(
+      () =>
+        filmsApi.findAll({
+          pagination: { page: 1, limit: 10 },
+          filters: [{ field: 'genre', value: genre.join(',') }],
+        }),
+      (data) => {
+        similarFilmsByGenre.value = data.films;
+      },
+      {
+        showToastSuccess: false,
+      }
+    );
+  };
+
   return {
     film,
     loading,
     error,
     fetchFilmDetails,
     reviews,
+    similarFilmsByGenre,
+    fetchSimilarFilmsByGenre,
   };
 });

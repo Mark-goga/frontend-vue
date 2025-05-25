@@ -33,7 +33,7 @@ const handleAvatarLoad = () => {
 <template>
   <div class="film-details">
     <div
-      class="film-backdrop w-full h-64 relative mb-8 overflow-hidden rounded-lg"
+      class="film-backdrop w-full h-[400px] relative mb-8 overflow-hidden rounded-lg"
       :class="{ 'image-loaded': imageLoaded }"
     >
       <img
