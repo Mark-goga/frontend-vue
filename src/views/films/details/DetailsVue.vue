@@ -8,14 +8,11 @@ import { useFilmDetailsStore } from '@/views/films/details/store';
 import { storeToRefs } from 'pinia';
 import InformationAboutFilm from '@/common/components/film/informationAboutFilm.vue';
 import FilmReviews from '@/views/films/details/components/FilmReviews.vue';
-import CustomModal from '@/common/components/ui/CustomModal.vue';
-import InputField from '@/common/components/form/inputField.vue';
 import CustomButton from '@/common/components/ui/CustomButton.vue';
-import { Form } from 'vee-validate';
 import { CreateReviewDto } from '@/common/types-validation';
-import StarList from '@/common/components/ui/StarList.vue';
 import { useCreateReview } from '@/common/hooks/review/create-rewiev';
 import CustomText from '@/common/components/ui/CustomText.vue';
+import CreateEditReview from '@/common/components/film/CreateEditReview.vue';
 
 const route = useRoute();
 const filmId = route.params.filmId as string;
@@ -46,12 +43,11 @@ const handleSubmitReview = async (values: any) => {
   };
 
   await createReviewStore.createReview(reviewData);
-  if (createReviewError) {
+  if (!createReviewError.value) {
     closeReviewModal();
     await fetchFilmDetails(filmId);
   }
 };
-
 onMounted(async () => {
   await fetchFilmDetails(filmId);
 });
@@ -84,50 +80,13 @@ onMounted(async () => {
       <FilmReviews :reviews="reviews" />
     </template>
 
-    <CustomModal
+    <CreateEditReview
       :is-open="isReviewModalOpen"
-      @close="closeReviewModal"
-      title="Write a Review"
-      width-class="max-w-lg"
-    >
-      <Form @submit="handleSubmitReview" :initial-values="{ title: '', review: '' }" class="w-full">
-        <InputField
-          label="Review Title"
-          type="text"
-          name="title"
-          rules="required|min:3"
-          placeholder="Enter review title"
-        />
-
-        <InputField
-          label="Your Review"
-          type="textarea"
-          name="review"
-          rules="required|min:10"
-          placeholder="Share your thoughts about this film..."
-          class="min-h-[120px]"
-        />
-
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-200 mb-1"> Rating </label>
-          <div class="flex items-center">
-            <StarList
-              :total-stars="10"
-              :active-stars="rating"
-              @click="(value: any) => (rating = value)"
-              :is-interactive="true"
-              class="text-2xl"
-            />
-            <span class="ml-2 text-gray-200">{{ rating }}/10</span>
-          </div>
-        </div>
-
-        <div class="flex justify-end gap-4 mt-6">
-          <CustomButton text="Cancel" type="button" :outlined="true" @click="closeReviewModal" />
-          <CustomButton type="submit" text="Submit Review" :loading="createReviewStore.loading" />
-        </div>
-      </Form>
-    </CustomModal>
+      :close-modal="closeReviewModal"
+      :handle-submit="handleSubmitReview"
+      :loading="createReviewLoading"
+      :initial-values="{ review: '', title: '' }"
+    />
   </div>
 </template>
 

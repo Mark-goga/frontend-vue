@@ -6,13 +6,14 @@ defineOptions({
   inheritAttrs: false,
 });
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     name: string;
     label: string;
     type: string;
     rules: string;
     placeholder?: string;
+    classForError?: string;
   }>(),
   {
     name: '',
@@ -22,6 +23,12 @@ withDefaults(
     placeholder: '',
   }
 );
+const getClassForError = () => {
+  return [
+    'text-status-error text-sm mt-1.5 font-medium absolute',
+    props.classForError ? [props.classForError] : '',
+  ].join(' ');
+};
 </script>
 
 <template>
@@ -35,6 +42,6 @@ withDefaults(
         :type="type"
       />
     </Field>
-    <ErrorMessage :name="name" class="text-status-error text-sm mt-1.5 font-medium absolute" />
+    <ErrorMessage :name="name" :class="getClassForError()" />
   </div>
 </template>

@@ -52,4 +52,8 @@ export const reviewsApi = {
       }
     );
   },
+
+  findByUser: async (userId: string) => {
+    return await apiService.get(`${reviewsApi.baseUrl}/user/${userId}`, {});
+  },
 };
