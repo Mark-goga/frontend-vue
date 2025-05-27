@@ -8,6 +8,9 @@ export const ROUTES = {
   FILMS: {
     DETAILS: '/films/:id',
   },
+  USER: {
+    REVIEWS: '/user/reviews',
+  },
 } as const;
 
 Object.freeze(ROUTES);

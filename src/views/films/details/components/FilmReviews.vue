@@ -4,10 +4,17 @@ import { formatDate } from '@/common/utils';
 import CardWrapper from '@/common/components/ui/CardWrapper.vue';
 import UserAvatar from '@/common/components/ui/UserAvatar.vue';
 import StarWithRating from '@/common/components/film/StarWithRating.vue';
+import { useRouter } from 'vue-router';
+import { ROUTES } from '@/common/constants/routes';
 
 defineProps<{
   reviews: ReviewWithUser[];
 }>();
+
+const router = useRouter();
+const handleUserClick = (userId: string) => {
+  router.push(`${ROUTES.USER.REVIEWS}/${userId}`);
+};
 </script>
 
 <template>
@@ -25,7 +32,7 @@ defineProps<{
       <div v-for="review in reviews" :key="review.id">
         <CardWrapper>
           <div class="flex gap-4 items-center">
-            <UserAvatar :name="review.user.name || 'Користувач'" />
+            <UserAvatar :name="review.user.name" @click="handleUserClick(review.userId)" />
 
             <div class="flex-1">
               <div class="flex items-start justify-between">

@@ -4,14 +4,21 @@ import ToastContainer from '@/common/components/ui/ToastContainer.vue';
 import { ROUTES } from '@/common/constants/routes';
 import { computed, onMounted } from 'vue';
 import { useUserStore } from '@/common/store';
+import { storeToRefs } from 'pinia';
 
 const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 
-const authenticatedLinks = [
+const reviewsRoute = computed(() => {
+  return user.value?.id ? `${ROUTES.USER.REVIEWS}/${user.value.id}` : '#';
+});
+
+const authenticatedLinks = computed(() => [
   { text: 'Home', route: ROUTES.HOME },
+  { text: 'Reviews', route: reviewsRoute.value, disabled: !user.value?.id },
   { text: 'Logout', action: () => userStore.logout() },
   { text: 'Sessions', route: ROUTES.AUTH.SESSIONS },
-];
+]);
 
 const unauthenticatedLinks = [
   { text: 'Home', route: ROUTES.HOME },
@@ -20,7 +27,7 @@ const unauthenticatedLinks = [
 ];
 
 const navLinks = computed(() => {
-  return userStore.isAuthenticated ? authenticatedLinks : unauthenticatedLinks;
+  return userStore.isAuthenticated ? authenticatedLinks.value : unauthenticatedLinks;
 });
 
 onMounted(() => {
@@ -37,14 +44,24 @@ onMounted(() => {
         <h1 class="text-lg font-bold">Filmmy</h1>
         <nav class="flex space-x-4">
           <template v-for="(link, index) in navLinks" :key="index">
-            <CustomLink v-if="link.route" :to="link.route">{{ link.text }}</CustomLink>
+            <CustomLink
+              v-if="link.route && link.route !== '#'"
+              :to="link.route"
+              :class="{ 'opacity-50 cursor-not-allowed': link.disabled }"
+            >
+              {{ link.text }}
+            </CustomLink>
             <a
-              v-else
+              v-else-if="link.action"
               href="#"
               @click.prevent="link.action"
               class="text-white hover:text-white/80"
-              >{{ link.text }}</a
             >
+              {{ link.text }}
+            </a>
+            <span v-else class="text-white opacity-50 cursor-not-allowed">
+              {{ link.text }}
+            </span>
           </template>
         </nav>
       </div>

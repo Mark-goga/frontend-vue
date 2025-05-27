@@ -5,6 +5,7 @@ import {
   ReviewResponseSchema,
   ReviewSchema,
   ReviewsWithUserResponseSchema,
+  ReviewWithUserAndFilmResponseSchema,
   UpdateReviewDto,
 } from '@/common/types-validation';
 
@@ -54,6 +55,8 @@ export const reviewsApi = {
   },
 
   findByUser: async (userId: string) => {
-    return await apiService.get(`${reviewsApi.baseUrl}/user/${userId}`, {});
+    return await apiService.get(`${reviewsApi.baseUrl}/user/${userId}`, {
+      schema: ReviewWithUserAndFilmResponseSchema,
+    });
   },
 };

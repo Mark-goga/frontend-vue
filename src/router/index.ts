@@ -4,8 +4,9 @@ import { useUserStore } from '@/common/store';
 import { storeToRefs } from 'pinia';
 import { homeRoutes } from '@/views/home';
 import { filmsRoutes } from '@/views/films';
+import { userRoutes } from '@/views/user';
 
-const routes: Array<RouteRecordRaw> = [...homeRoutes, ...authRoutes, ...filmsRoutes];
+const routes: Array<RouteRecordRaw> = [...homeRoutes, ...authRoutes, ...filmsRoutes, ...userRoutes];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

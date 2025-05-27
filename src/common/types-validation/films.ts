@@ -1,21 +1,10 @@
 import { z } from 'zod';
 import { createApiResponseSchema } from '@/common/api';
 import { PaginationSchema } from '@/common/types-validation/api';
+import { BaseFilmSchema } from '@/common/types-validation/shared-schemas';
 import { ReviewWithUserSchema } from '@/common/types-validation/review';
 
-const FilmSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  description: z.string(),
-  director: z.string(),
-  releaseDate: z.string(),
-  genre: z.array(z.string()),
-  estimation: z.number(),
-  backGroundImageKey: z.string().optional(),
-  avatarImageKey: z.string().optional(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-});
+export const FilmSchema = BaseFilmSchema;
 
 export const FilmsResponseSchema = createApiResponseSchema(
   z.object({
