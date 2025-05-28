@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { UserSchema } from '@/common/types-validation/user';
-import { PaginationSchema } from '@/common/types-validation/api';
+import { FilterSchema, PaginationSchema } from '@/common/types-validation/api';
 import { createApiResponseSchema } from '@/common/api';
 import { BaseFilmSchema, BaseReviewSchema } from '@/common/types-validation/shared-schemas';
 
@@ -43,6 +43,12 @@ export const ReviewWithUserAndFilmResponseSchema = createApiResponseSchema(
   z.object({
     reviews: z.array(ReviewWithFilmSchema),
     user: UserSchema,
+  })
+);
+
+export const PersonalFilterForFilmsResponseSchema = createApiResponseSchema(
+  z.object({
+    filters: z.array(FilterSchema),
   })
 );
 

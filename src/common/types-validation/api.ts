@@ -11,6 +11,11 @@ export const PaginationSchema = z.object({
   hasPrev: z.boolean(),
 });
 
+export const FilterSchema = z.object({
+  field: z.string(),
+  value: z.string(),
+});
+
 export enum SortDirection {
   SORT_DIRECTION_ASC = 0,
   SORT_DIRECTION_DESC = 1,
@@ -30,3 +35,7 @@ export type FindManyDocumentsDto = {
     direction: SortDirection;
   };
 };
+
+export type PaginationDto = Pick<FindManyDocumentsDto, 'pagination'>;
+export type Filter = z.infer<typeof FilterSchema>;
+export type PaginationMeta = z.infer<typeof PaginationSchema>;

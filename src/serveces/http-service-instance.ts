@@ -8,7 +8,7 @@ export const apiService = new HttpService('http://localhost:3000/api', {
   onError: async (error, requestFn, schema) => {
     const httpError = error as HttpError;
 
-    if (httpError.status === 401 && httpError.message === 'Token expired or invalid') {
+    if (httpError.status === 401 && httpError.message === 'Token expired') {
       try {
         await authApi.refresh();
 

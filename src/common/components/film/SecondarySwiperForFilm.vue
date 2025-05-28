@@ -8,15 +8,21 @@ import StarList from '@/common/components/ui/StarList.vue';
 import ListOfText from '@/common/components/ui/ListOfText.vue';
 import { Film } from '@/common/types-validation';
 
-defineProps<{
-  films: Film[];
-  handleFilmClick: (film: Film) => void;
-}>();
+withDefaults(
+  defineProps<{
+    films: Film[];
+    handleFilmClick: (film: Film) => void;
+    title?: string;
+  }>(),
+  {
+    title: 'Схожі фільми за жанром',
+  }
+);
 </script>
 
 <template>
   <div v-if="films.length > 0" class="mb-10">
-    <h2 class="text-2xl font-bold text-white mb-6">Схожі фільми за жанром</h2>
+    <h2 class="text-2xl font-bold text-white mb-6">{{ title }}</h2>
     <div class="similar-films-slider">
       <Swiper
         :modules="[FreeMode, Navigation, Autoplay]"

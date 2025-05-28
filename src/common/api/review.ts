@@ -2,6 +2,7 @@ import { apiService } from '@/serveces/http-service-instance';
 import {
   CreateReviewDto,
   FindManyDocumentsDto,
+  PersonalFilterForFilmsResponseSchema,
   ReviewResponseSchema,
   ReviewSchema,
   ReviewsWithUserResponseSchema,
@@ -57,6 +58,12 @@ export const reviewsApi = {
   findByUser: async (userId: string) => {
     return await apiService.get(`${reviewsApi.baseUrl}/user/${userId}`, {
       schema: ReviewWithUserAndFilmResponseSchema,
+    });
+  },
+
+  getPersonalFilterForFilms: async (userId: string) => {
+    return apiService.get(`${reviewsApi.baseUrl}/personal/filters/${userId}`, {
+      schema: PersonalFilterForFilmsResponseSchema,
     });
   },
 };

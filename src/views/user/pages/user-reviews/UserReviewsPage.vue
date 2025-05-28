@@ -10,6 +10,8 @@ import CustomText from '@/common/components/ui/CustomText.vue';
 import StarWithRating from '@/common/components/film/StarWithRating.vue';
 import UserDontHaveReview from '@/views/user/components/UserDontHaveReview.vue';
 import UserInfo from '@/views/user/pages/user-reviews/components/UserInfo.vue';
+import PersonalFilms from '@/views/user/pages/user-reviews/components/PersonalFilms.vue';
+import ListOfText from '@/common/components/ui/ListOfText.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -67,6 +69,7 @@ onMounted(async () => {
                 <CustomText class="text-gray-300 line-clamp-3">
                   {{ review.film.description }}
                 </CustomText>
+                <ListOfText :texts="review.film.genre" />
               </div>
             </div>
           </div>
@@ -99,6 +102,7 @@ onMounted(async () => {
         </CardWrapper>
       </div>
       <UserDontHaveReview v-else class="mt-3" />
+      <PersonalFilms />
     </template>
   </div>
 </template>
