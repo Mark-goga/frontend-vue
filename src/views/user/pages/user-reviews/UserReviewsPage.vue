@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUserReviewsStore } from '@/views/user/pages/user-reviews/store';
 import { storeToRefs } from 'pinia';
@@ -12,22 +12,74 @@ import UserDontHaveReview from '@/views/user/components/UserDontHaveReview.vue';
 import UserInfo from '@/views/user/pages/user-reviews/components/UserInfo.vue';
 import PersonalFilms from '@/views/user/pages/user-reviews/components/PersonalFilms.vue';
 import ListOfText from '@/common/components/ui/ListOfText.vue';
+import ActionsMenu from '@/common/components/ui/ActionsMenu.vue';
+import { useUserStore } from '@/common/store';
+import { Review } from '@/common/types-validation';
+import CreateEditReview from '@/common/components/film/CreateEditReview.vue';
 
 const route = useRoute();
 const router = useRouter();
 const userId = ref(route.params.userId as string);
 
+const userStore = useUserStore();
+const { user: currentUser } = storeToRefs(userStore);
+const isCurrentUser = computed(() => currentUser.value?.id === userId.value);
+
 const store = useUserReviewsStore();
 const { loading, error, user, reviews } = storeToRefs(store);
-const { fetchUserReviews } = store;
+const { fetchUserReviews, editReview, deleteReview } = store;
 
 const navigateToFilm = (filmId: string) => {
   router.push(`/films/${filmId}`);
 };
 
-onMounted(async () => {
+const isOpenReviewModal = ref<boolean>(false);
+const currentReviewToEdit = ref<Review | null>(null);
+const initialValuesForReview = ref({
+  title: '',
+  review: '',
+});
+
+const openEditReviewModal = (review: Review) => {
+  currentReviewToEdit.value = review;
+  isOpenReviewModal.value = true;
+  initialValuesForReview.value = {
+    title: review.title,
+    review: review.description,
+  };
+};
+
+const closeReviewModal = () => {
+  isOpenReviewModal.value = false;
+  currentReviewToEdit.value = null;
+};
+
+const handleEditReviewSubmit = async (reviewData: any) => {
+  if (!currentReviewToEdit.value) return;
+  const description = reviewData.review;
+  delete reviewData.review;
+
+  await editReview(currentReviewToEdit.value.id, {
+    ...reviewData,
+    description,
+  });
+  closeReviewModal();
+};
+
+const reviewActions = [
+  {
+    label: 'Редагувати',
+    action: (review: Review) => openEditReviewModal(review),
+  },
+  {
+    label: 'Видалити',
+    action: (review: Review) => deleteReview(review.id),
+  },
+];
+
+onMounted(() => {
   if (userId.value) {
-    await fetchUserReviews(userId.value);
+    fetchUserReviews(userId.value);
   }
 });
 </script>
@@ -36,6 +88,14 @@ onMounted(async () => {
   <div class="max-w-[1300px] mx-auto px-4 py-8">
     <CustomLoader v-if="loading" />
     <ErrorText :error="error" />
+
+    <CreateEditReview
+      :isOpen="isOpenReviewModal && currentReviewToEdit"
+      :handleSubmit="handleEditReviewSubmit"
+      :loading="loading"
+      :initialValues="initialValuesForReview"
+      :closeModal="closeReviewModal"
+    />
 
     <template v-if="user">
       <UserInfo />
@@ -77,8 +137,17 @@ onMounted(async () => {
           <div class="review-section p-5 bg-gray-800 bg-opacity-30 flex-1">
             <div class="mb-2 flex items-center justify-between">
               <CustomText variant="title" class="text-blue-300">Коментар</CustomText>
-              <div class="text-sm text-gray-400">
-                {{ new Date(review.createdAt).toLocaleDateString() }}
+              <div class="flex items-center gap-2">
+                <div class="text-sm text-gray-400">
+                  {{ new Date(review.createdAt).toLocaleDateString() }}
+                </div>
+
+                <ActionsMenu
+                  v-if="isCurrentUser"
+                  :actions="reviewActions"
+                  :current-item="review"
+                  class="ml-2"
+                />
               </div>
             </div>
 
@@ -128,5 +197,9 @@ onMounted(async () => {
   right: 10%;
   height: 1px;
   background: linear-gradient(to right, transparent, rgba(107, 114, 128, 0.5), transparent);
+}
+
+.actions-dropdown {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 </style>

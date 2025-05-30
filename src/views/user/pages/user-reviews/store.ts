@@ -8,6 +8,7 @@ import {
   FindManyDocumentsDto,
   PaginationMeta,
   ReviewWithFilm,
+  UpdateReviewDto,
   User,
 } from '@/common/types-validation';
 import { filmsApi } from '@/common/api/films';
@@ -61,6 +62,35 @@ export const useUserReviewsStore = defineStore('userReviews', () => {
     );
   };
 
+  const editReview = async (reviewId: string, data: UpdateReviewDto) => {
+    await handleApiRequest(
+      () => reviewsApi.update(reviewId, data),
+      (updatedReview) => {
+        const index = reviews.value.findIndex((review) => review.id === updatedReview.id);
+        if (index !== -1) {
+          reviews.value[index] = { ...reviews.value[index], ...updatedReview };
+        }
+      },
+      {
+        showToastSuccess: true,
+        showToastError: true,
+      }
+    );
+  };
+
+  const deleteReview = async (reviewId: string) => {
+    await handleApiRequest(
+      () => reviewsApi.remove(reviewId),
+      () => {
+        reviews.value = reviews.value.filter((review) => review.id !== reviewId);
+      },
+      {
+        showToastSuccess: true,
+        showToastError: true,
+      }
+    );
+  };
+
   return {
     loading,
     error,
@@ -72,5 +102,7 @@ export const useUserReviewsStore = defineStore('userReviews', () => {
     fetchUserReviews,
     fetchPersonalFilms,
     getPersonalFilterForFilms,
+    editReview,
+    deleteReview,
   };
 });
