@@ -83,7 +83,6 @@ onMounted(async () => {
               <CustomText variant="body" class="text-xl font-bold truncate"
                 >{{ film.title }}
               </CustomText>
-              <div @onclick="() => console.log(film)"></div>
               <StarList class="mb-3" :rating="film.estimation || 0" />
               <p v-if="film.director" class="text-text-muted text-sm mb-1">
                 <span class="font-semibold">Режисер:</span> {{ film.director }}

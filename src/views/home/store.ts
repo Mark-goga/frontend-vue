@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { filmsApi } from '@/common/api/films';
 import { useApiRequest } from '@/common/hooks';
-import { Film } from '@/common/types-validation';
+import { Film, SortDirection } from '@/common/types-validation';
 
 export const useHomeStore = defineStore('home', () => {
   const loading = ref<boolean>(false);
@@ -13,7 +13,11 @@ export const useHomeStore = defineStore('home', () => {
 
   const fetchFilms = async () => {
     await handleApiRequest(
-      () => filmsApi.findAll({ pagination: { page: 1, limit: 20 } }),
+      () =>
+        filmsApi.findAll({
+          pagination: { page: 1, limit: 20 },
+          sorting: { field: 'estimation', direction: SortDirection.SORT_DIRECTION_ASC },
+        }),
       (data) => {
         films.value = data.films;
       },
